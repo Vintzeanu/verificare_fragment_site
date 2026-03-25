@@ -8,7 +8,14 @@ from tkinter import ttk, messagebox
 BASE_DIR = r"\\192.168.1.240\BT Redactional"
 AN_CURENT = datetime.now().year
 ANI_TRECUTI = [str(an) for an in range(2015, AN_CURENT)]
-INDEX_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index_pdf.json")
+import sys
+
+if getattr(sys, 'frozen', False):
+    BASE_EXE = os.path.dirname(sys.executable)
+else:
+    BASE_EXE = os.path.dirname(os.path.abspath(__file__))
+
+INDEX_FILE = os.path.join(BASE_EXE, "index_pdf.json")
 
 
 def construieste_index(callback_status=None):
@@ -96,7 +103,7 @@ class App:
                                    command=self.start_search)
         self.btn_cauta.grid(row=1, column=1, padx=(10, 0), pady=(4, 12))
 
-        self.btn_index = tk.Button(root, text="Rebuild index", font=("Segoe UI", 9),
+        self.btn_index = tk.Button(root, text="Rebuil index", font=("Segoe UI", 9),
                                    bg="#e5e7eb", fg="#333", relief="flat",
                                    padx=10, pady=4, cursor="hand2",
                                    command=self.start_rebuild)
@@ -130,7 +137,7 @@ class App:
             total = sum(len(v) for v in index.values())
             self.index_var.set("Index incarcat: " + str(total) + " PDF-uri din anii 2015-" + str(AN_CURENT - 1))
         else:
-            self.index_var.set("Niciun index gasit. Apasa 'Rebuild index' pentru prima scanare.")
+            self.index_var.set("Niciun index gasit. Apasa 'Rebuil index' pentru prima scanare.")
 
     def start_rebuild(self):
         self.btn_cauta.config(state="disabled")
@@ -162,7 +169,7 @@ class App:
             return
         if not self.index:
             messagebox.showinfo("Index lipsa",
-                "Indexul nu este construit inca.\nApasa 'Rebuild index' pentru prima scanare.")
+                "Indexul nu este construit inca.\nApasa 'Rebuil index' pentru prima scanare.")
             return
 
         self.btn_cauta.config(state="disabled")
